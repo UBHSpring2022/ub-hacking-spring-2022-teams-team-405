@@ -35,7 +35,7 @@ class SuperToken < ApplicationRecord
                 SuperToken.create!(token:hash, user_id: user.id, client_ip: request.remote_ip, agent: request.user_agent, expiry: Time.now)
             else
                 SuperToken.where(user_id:user.id).where(is_sms:true).destroy_all # Destroys all the old sms tokens to create a new one
-                randomNumber = rand(12345..99999)
+                randomNumber = rand(1234..9999)
                 SuperToken.create!(token:"#{user.id}#{randomNumber}",is_sms:true, user_id: user.id, client_ip: request.remote_ip, agent: request.user_agent, expiry: Time.now)
             end
         else 
