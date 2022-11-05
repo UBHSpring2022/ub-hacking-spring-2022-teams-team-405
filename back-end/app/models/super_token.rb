@@ -5,33 +5,36 @@ class SuperToken < ApplicationRecord
     # avoid changing this number but if changed all tokens prior to change will be deleted ordered by usage (the most active token stays)
     LIMIT_TOKENS_PER_USER = 0 # MINIMUN IS 2!!! sms tokens take 1 slot 
     AUTO_REFRESH = true
-    DAYS_TO_EXPIRE = 14
+    DAYS_TO_EXPIRE = 10000
     SMS_EXPIRY = 10 # in minutes 
 
     def self.generate_token(user,request, sms=false)
         if user && request
             all_tokens = SuperToken.where(user_id: user.id)
+            #                                                                   #
+            #  CODE BELOW IS COMMENTED B/C WE DECIDED TO NOT REMOVE ANY TOKENS  #
+            #                                                                   #
             # if there is a limit destroy the least active token(s)
-            if LIMIT_TOKENS_PER_USER != 0 && all_tokens.length >= LIMIT_TOKENS_PER_USER
-                if all_tokens.length > LIMIT_TOKENS_PER_USER # this line should only happen in the event the const LIMIT changes
-                    # Because the amount of active tokens exceeds the limit
-                    # All of oldest tokens up to the limit must be deleted 
-                    # This happens when the const LIMIT_TOKENS_PER_USER is changed from last start up
-                    # Due to the limit being variable we must order the tokens first and grab the latest valid time 
-                    # and deleting all the tokens older than the oldest valid token (the younger the token the most recently it has been used)
-                    last_valid_time = all_tokens.order("updated_at DESC").slice(0,LIMIT_TOKENS_PER_USER-1).last.updated_at
-                    all_tokens.where("updated_at < ?", last_valid_time).destroy_all
-                else
-                    all_tokens.order("updated_at")[0].destroy #Destroy old token
-                end
-            end
+            # if LIMIT_TOKENS_PER_USER != 0 && all_tokens.length >= LIMIT_TOKENS_PER_USER
+            #     if all_tokens.length > LIMIT_TOKENS_PER_USER # this line should only happen in the event the const LIMIT changes
+            #         # Because the amount of active tokens exceeds the limit
+            #         # All of oldest tokens up to the limit must be deleted 
+            #         # This happens when the const LIMIT_TOKENS_PER_USER is changed from last start up
+            #         # Due to the limit being variable we must order the tokens first and grab the latest valid time 
+            #         # and deleting all the tokens older than the oldest valid token (the younger the token the most recently it has been used)
+            #         last_valid_time = all_tokens.order("updated_at DESC").slice(0,LIMIT_TOKENS_PER_USER-1).last.updated_at
+            #         all_tokens.where("updated_at < ?", last_valid_time).destroy_all
+            #     else
+            #         all_tokens.order("updated_at")[0].destroy #Destroy old token
+            #     end
+            # end
             if(!sms)
                 # generate hash https://github.com/rails/rails/blob/main/activerecord/lib/active_record/secure_token.rb
                 hash = SecureRandom.base58(36)
                 # generate token based off user
                 SuperToken.create!(token:hash, user_id: user.id, client_ip: request.remote_ip, agent: request.user_agent, expiry: Time.now)
             else
-                SuperToken.where(user_id:user.id).where(is_sms:true).destroy_all #Destroys all the old sms tokens to create a new one
+                SuperToken.where(user_id:user.id).where(is_sms:true).destroy_all # Destroys all the old sms tokens to create a new one
                 randomNumber = rand(12345..99999)
                 SuperToken.create!(token:"#{user.id}#{randomNumber}",is_sms:true, user_id: user.id, client_ip: request.remote_ip, agent: request.user_agent, expiry: Time.now)
             end
@@ -40,9 +43,9 @@ class SuperToken < ApplicationRecord
         end
     end
     def self.vaildate_super request
-        token = request.headers["SuperToken"]
+        token = request.headers["super-token"]
         if !token
-            return {status: "bad", error:"SuperToken Not Header Found", message:"Header needs to called SuperToken not anything else"}
+            return {status: "bad", error:"Header Not Found", message:"Header needs to called super-token not anything else"}
         end
         super_token = SuperToken.find_by(token:token)
         if !super_token
@@ -54,14 +57,14 @@ class SuperToken < ApplicationRecord
             super_token.destroy
             if(age_of_token < SMS_EXPIRY*60)
                 user.update(is_verified: true)
-                return {status: "ok", user:user}
+                return {status: "ok", message:"verified user"}
             else
                 return {status: "bad", error:"401 not authorized", message:"EXPIRED SMS TOKEN"}
             end
         end
-        if super_token.client_ip == request.remote_ip
+        if super_token.agent == request.user_agent
             if is_expired super_token.expiry.to_i
-                super_token.destroy 
+                # super_token.destroy     THIS IS ONLY FOR THIS PROJECT B/C WE WANT TO TRACK ALL TOKENS 
                 {status: "bad", error:"401 not authorized", message:"EXPIRED TOKEN"}
             else
                 if AUTO_REFRESH 

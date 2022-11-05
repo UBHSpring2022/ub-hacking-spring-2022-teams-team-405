@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_05_195547) do
     t.integer "user_id"
     t.string "agent"
     t.string "client_ip"
+    t.boolean "is_sms", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

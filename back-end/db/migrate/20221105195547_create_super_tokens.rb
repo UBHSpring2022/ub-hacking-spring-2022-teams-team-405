@@ -6,7 +6,7 @@ class CreateSuperTokens < ActiveRecord::Migration[7.0]
       t.integer :user_id
       t.string :agent
       t.string :client_ip
-
+      t.boolean :is_sms, default: false
       t.timestamps
     end
   end
