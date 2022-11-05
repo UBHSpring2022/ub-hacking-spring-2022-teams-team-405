@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   post "/textme", to: "auth#textme" 
-  get "/verify", to: "auth#verify" 
+  get "/verifyme", to: "auth#verifyme" 
+  get "/me", to: "auth#me" 
   post "/login", to: "auth#login" 
   post "/signup", to: "auth#signup" 
 end

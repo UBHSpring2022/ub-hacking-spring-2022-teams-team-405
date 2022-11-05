@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_05_195547) do
     t.string "long"
     t.boolean "sms_verified", default: false
     t.boolean "email_verified", default: false
-    t.boolean "is_uncle"
+    t.boolean "is_uncle", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

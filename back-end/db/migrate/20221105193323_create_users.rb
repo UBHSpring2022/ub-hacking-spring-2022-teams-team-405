@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :long
       t.boolean :sms_verified, default: false
       t.boolean :email_verified, default: false
-      t.boolean :is_uncle
+      t.boolean :is_uncle, default: false
 
       t.timestamps
     end
