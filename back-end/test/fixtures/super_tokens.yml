@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  token: MyString
+  expiry: 2022-11-05 15:55:47
+  user_id: 1
+  agent: MyString
+  client_ip: MyString
+
+two:
+  token: MyString
+  expiry: 2022-11-05 15:55:47
+  user_id: 1
+  agent: MyString
+  client_ip: MyString
