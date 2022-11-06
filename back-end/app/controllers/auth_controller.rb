@@ -3,7 +3,6 @@ class AuthController < ApplicationController
   rescue_from Twilio::REST::RestError, with: :twilio_error
   
   SMS_EXPIRY = 10 # in minutes 
-
   def send_sms
     token = SuperToken.generate_token(@@user, request,true)
     account_sid = ENV['TWILIOACCOUNTSID']
@@ -54,7 +53,7 @@ class AuthController < ApplicationController
     user = user_found.try(:authenticate, params[:password])
     if user
         super_token = SuperToken.generate_token(user, request)
-        render json: {user:user, token: super_token.token}
+        render json: {user:UserSerializer.new(user), token: super_token.token}
     else
         render json: {status:"bad", error: "401 UNAUTHORIZED", message:"Incorrect Password"}, status: 401
     end
@@ -64,13 +63,14 @@ class AuthController < ApplicationController
   def signup
     # create user from params 
     @@user = User.create!(display_name: params[:display_name], email: params[:email],phone:params[:phone],password: params[:password], lat: params[:lat],long: params[:long])
-    supertoken = SuperToken.generate_token(@@user, request)
+    @@supertoken = SuperToken.generate_token(@@user, request)
     send_sms
-    render json: {user:@@user, token: supertoken.token}
+
+    return render json: {user:UserSerializer.new(@@user), token: @@supertoken.token}
   end
 
-  private
+
   def twilio_error(exception)
-      render json: { status: "bad",error: exception.error_message }, status: 400 
+      render json: { _error: exception.error_message, data:{user:UserSerializer.new(@@user), token: @@supertoken.token} }, status: 400 
   end
 end

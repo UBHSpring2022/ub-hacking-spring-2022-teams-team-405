@@ -2,7 +2,7 @@ import coinLogo from "../assets/mozam-logo.png"
 const About = () => {
   return (
     <div className="About">
-      <h1 className="About-title"> Who are we <span className="About-questionmark">?</span></h1>
+      <h1 id="About" className="About-title"> Who are we <span className="About-questionmark">?</span></h1>
       <p>Mozam is a marketplace for sellers and buyers to exchange 
 rare fish with anonymity. Our mission is to serve our customers 
 with the best service possible while protecting their identity   </p>

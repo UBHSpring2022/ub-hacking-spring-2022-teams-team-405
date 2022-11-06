@@ -1,21 +1,34 @@
 import "./styles/App.scss";
 import Landing from "./pages/Landing.jsx";
+import Market from "./pages/Market.jsx";
 import Register from "./pages/Register.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Chat from "./components/Chat.jsx";
 import Detail from "./pages/Detail.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import ModalView from "./components/ModalView.jsx";
+import PersistProfile from "./components/PersistProfile.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App({cable}) {
+
+
+	const [openModal, setOpenModal] = useState(false);
 	const navigate = useNavigate();
+	let handleOpenModal = () => {
+		setOpenModal(true);
+	};
 	return (
 		<>
-      <Navbar />
+			<PersistProfile />
+			<ModalView setOpenModal={setOpenModal} openModal={openModal}/>
+			<Navbar handleOpenModal={handleOpenModal} />
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/detail/:uuid" element={<Detail/>} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/chat/:uuid" element={<Chat cable={cable}/>} />
+				<Route path="/market" element={<Market />} />
 				<Route
 					path="*"
 					element={
@@ -25,6 +38,7 @@ function App({cable}) {
 					}
 				/>
 			</Routes>
+			<Footer />
 		</>
 	);
 }
