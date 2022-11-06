@@ -2,6 +2,9 @@ import "../styles/Detail.scss";
 import { useEffect, useState } from "react";
 import contract from './nft.json';
 import { ethers } from 'ethers';
+import "../styles/MarketItem.scss";
+import coinLogo from "../assets/mozam-logo.png"
+
 import { useNavigate } from "react-router-dom";
 
 const contractAddress = "0x355638a4eCcb777794257f22f50c289d4189F245";
@@ -153,7 +156,12 @@ const Detail = () => {
                 <div>
                     <h1>{product.name}</h1>
                     <p>{seller.display_name}</p>
-                    <p>{product.price}</p>
+                    <div style={{justifyContent: "flex-start"}} className="MarketItem-price">
+					    <img src={coinLogo} alt="coin" style={{width: "7vh", height: "7vh"}}/>
+					    <p style={{fontSize: "larger", marginLeft: "20px"}} >
+						{product.price} <span>MOZ</span>
+					    </p>
+				    </div>
                 </div>
                 <button className="first" onClick={()=>{
                     let product_id = window.location.href.match(/\d+$/)[0]
@@ -174,6 +182,7 @@ const Detail = () => {
                         // console.log("result", result);
                         if(result.error){
                             // FAILED
+                            
                         }else{
                             // success
                             navigate(`/chat/${result.id}`)
