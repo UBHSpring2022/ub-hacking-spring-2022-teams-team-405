@@ -10,32 +10,77 @@ import FormControl from "@mui/material/FormControl";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import VpnKeyRoundedIcon from "@mui/icons-material/VpnKeyRounded";
-import SailingRoundedIcon from '@mui/icons-material/SailingRounded';
-import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
+import SailingRoundedIcon from "@mui/icons-material/SailingRounded";
+import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
 import "../styles/Modal.scss";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser, verifyUser } from "../state/user.js";
+
+import Swal from "sweetalert2";
+
 const ModalView = ({ setOpenModal, openModal }) => {
+	const dispatch = useDispatch();
+
 	const [switchLogin, setSwitchLogin] = useState(true);
 	const [verifySMS, setVerifySMS] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [form, setForm] = useState({})
+	const [form, setForm] = useState({});
 	let handleLogin = (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 		fetch("http://127.0.0.1:3000/login", {
 		  method: "POST",
 			headers: {
 			  "Content-Type": "application/json",
 			},
-			body: JSON.stringify(form),
+			body: JSON.stringify({...form,phone:form.email}),
 		  })
-			.then(res => res.json())
-			.then(data => console.log(data));
+			.then(res =>{
+					setIsLoading(false);
+					return res.json()
+				})
+			.then(data => {
+				
+
+				if(data["error"]){
+					Swal.fire(data["error"], data["message"], "error");
+				}else{
+					localStorage.setItem("token", data["token"]);
+					dispatch(setUser(data.user));
+					setOpenModal(false)
+				}
+
+			});
 	};
 	let handleSignup = (e) => {
 		e.preventDefault();
-		console.log(form)
-
+		setIsLoading(true);
+		fetch("http://127.0.0.1:3000/signup", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(form),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setIsLoading(false);
+				if (data["error"]) {
+					Swal.fire(data["error"], data["message"], "error");
+				} else {
+					if(data["data"]){
+						dispatch(setUser(data.data.user));
+						setVerifySMS(true);
+						localStorage.setItem("token", data.data.token);
+					}else{
+						dispatch(setUser(data.user));
+						setVerifySMS(true);
+						localStorage.setItem("token", data.token);
+					}
+				}
+			});
 	};
 	let buttonStyle = {
 		border: "none",
@@ -58,16 +103,36 @@ const ModalView = ({ setOpenModal, openModal }) => {
 	let handleChange = (e) => {
 		setForm({
 			...form,
-			[e.target.name]: e.target.value
-		})
-	}
-	let handleVerify =(e) => {
+			[e.target.name]: e.target.value,
+		});
+	};
+	let handleVerify = (e) => {
 		e.preventDefault();
-	  	console.log("verify")
-	}
-	useEffect(()=>{
-		setForm({})
-	},[switchLogin])
+		setIsLoading(true);
+
+		fetch("http://127.0.0.1:3000/verify", {
+		  method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
+			  "super-token": form.sms_token
+			}
+		  })
+			.then(res => {
+				setIsLoading(false);
+				return res.json()
+			})
+			.then(data => {
+				if (data["error"]) {
+					Swal.fire(data["error"], data["message"], "error");
+				} else {
+					dispatch(verifyUser())
+					setOpenModal(false)
+				}
+			});
+	};
+	useEffect(() => {
+		setForm({});
+	}, [switchLogin,verifySMS]);
 	return (
 		<>
 			<Modal
@@ -79,29 +144,30 @@ const ModalView = ({ setOpenModal, openModal }) => {
 					<div className="Modal-container">
 						{verifySMS ? (
 							<>
-								<h1>
-									Enter SMS code
-								</h1>
+								<h1>Enter SMS code</h1>
 								<form onSubmit={handleVerify}>
 									<TextField
 										onChange={handleChange}
 										label="Code"
 										name="sms_token"
-										value={form.email||""}
+										value={form.sms_token || ""}
 										placeholder="Numbers only"
 										className="Modal-login-input"
 										variant="filled"
 										fullWidth
 										required
 									/>
-								{isLoading ? (
-										<CircularProgress size={60} sx={{ color: "darkorange" }} />
+									{isLoading ? (
+										<CircularProgress size={60} sx={{ color: "purple" }} />
 									) : (
 										<Button className="Modal-submitbtn" type="submit" sx={buttonStyle} variant="outlined">
 											Verify
 											<VerifiedRoundedIcon fontSize="large" />
 										</Button>
 									)}
+									<p onClick={() => setOpenModal(false)} className="Modal-signup-text">
+										Skip for now
+									</p>
 								</form>
 							</>
 						) : switchLogin ? (
@@ -113,7 +179,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										autoComplete="email"
 										label="Email / Phone"
 										name="email"
-										value={form.email||""}
+										value={form.email || ""}
 										placeholder="Email / Phone"
 										className="Modal-login-input"
 										variant="filled"
@@ -125,7 +191,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										<FilledInput
 											onChange={handleChange}
 											required
-											value={form.password||""}
+											value={form.password || ""}
 											name="password"
 											id="filled-adornment-password"
 											autoComplete="password"
@@ -148,7 +214,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										/>
 									</FormControl>
 									{isLoading ? (
-										<CircularProgress size={60} sx={{ color: "darkorange" }} />
+										<CircularProgress size={60} sx={{ color: "purple" }} />
 									) : (
 										<Button className="Modal-submitbtn" type="submit" sx={buttonStyle} variant="outlined">
 											Login
@@ -169,7 +235,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 								<form onSubmit={handleSignup}>
 									<TextField
 										onChange={handleChange}
-										value={form.display_name||""}
+										value={form.display_name || ""}
 										label="Display name"
 										name="display_name"
 										placeholder="Display name"
@@ -180,8 +246,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 									/>
 									<TextField
 										onChange={handleChange}
-										value={form.email||""}
-
+										value={form.email || ""}
 										autoComplete="email"
 										label="Email"
 										name="email"
@@ -196,8 +261,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										autoComplete="phone"
 										label="Phone"
 										name="phone"
-										value={form.phone||""}
-
+										value={form.phone || ""}
 										placeholder="Phone"
 										className="Modal-login-input"
 										variant="filled"
@@ -208,7 +272,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										<InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
 										<FilledInput
 											onChange={handleChange}
-											value={form.password||""}
+											value={form.password || ""}
 											required
 											name="password"
 											id="filled-adornment-password"
@@ -232,7 +296,7 @@ const ModalView = ({ setOpenModal, openModal }) => {
 										/>
 									</FormControl>
 									{isLoading ? (
-										<CircularProgress size={60} sx={{ color: "darkorange" }} />
+										<CircularProgress size={60} sx={{ color: "purple" }} />
 									) : (
 										<Button className="Modal-submitbtn" type="submit" sx={buttonStyle} variant="outlined">
 											Sign Up
