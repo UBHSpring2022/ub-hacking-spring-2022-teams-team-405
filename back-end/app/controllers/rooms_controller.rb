@@ -6,7 +6,7 @@ class RoomsController < ApplicationController
             existing_room = Room.find_by(product_id: params[:product_uuid])
             if existing_room
                 if existing_room.users.include?(@user) && existing_room.users.include?(seller)
-                    render json: {error: "409 Conflict", message:"Room already exists"},status: :conflict
+                    render json: existing_room
                 else
                     room = Room.create!(is_open: true, product_id: params[:product_uuid])
                     Chat.create!(user_id: seller.id, room_id: new_room.id);

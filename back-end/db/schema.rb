@@ -66,10 +66,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_06_072129) do
 
   create_table "products", force: :cascade do |t|
     t.string "name"
-    t.string "breed"
-    t.string "age"
     t.string "price"
     t.integer "user_id"
+    t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -99,6 +98,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_06_072129) do
     t.string "password_digest"
     t.string "lat"
     t.string "long"
+    t.string "meta_address"
     t.boolean "sms_verified", default: false
     t.boolean "email_verified", default: false
     t.boolean "is_uncle", default: false
