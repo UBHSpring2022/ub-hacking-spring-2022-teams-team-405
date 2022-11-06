@@ -13,6 +13,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        background-image: url("../assets/Fish1.png");
+        background-position: right;
+        background-size: 40vw;
+        background-repeat: no-repeat;
         &-brands{
             display: flex;
             flex-wrap: wrap;
