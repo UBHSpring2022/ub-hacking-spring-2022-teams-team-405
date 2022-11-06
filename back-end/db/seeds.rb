@@ -15,14 +15,14 @@ Message.destroy_all
 Product.destroy_all
 
 puts "Seeding the ZARA employees"
-santo = User.create!(display_name: "Santo", email:"Santo@mozam.com",phone:"9294226244",password: "123", lat: "43",long: "43",sms_verified:false,email_verified:true,is_uncle:true)
-mohamed = User.create!(display_name: "Mohamed", email:"mohamed@muflahi.dev",phone:"9294226224",password: "12345", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
+santo = User.create!(display_name: "Santo", email:"Santo@mozam.com",phone:"1234",password: "123", lat: "43",long: "43",sms_verified:false,email_verified:true,is_uncle:true)
+mohamed = User.create!(display_name: "Mohamed", email:"mohamed@muflahi.dev",phone:"12356",password: "12345", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 mustafa = User.create!(display_name: "Mustafa", email:"mustafa@binalhag.dev",phone:"9294226250",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 not_uncle = User.create!(display_name: "Mustafa", email:"test_uncle",phone:"1232131232",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:false)
 
 puts "Seeding the ZARA chats"
 # product = Product.create!(name: "ZARA T-Shirt", price: 20, description: "A ZARA T-Shirt", user_id: santo.id); # lol
-product = Product.create!(name: "ZARA T-Shirt",price: 250,user_id: santo.id);
+product = Product.create!(name: "ZARA T",price: 250,user_id: santo.id);
 product2 = Product.create!(name: "ZARA ", price: 200,user_id: mustafa.id);
 
 room = Room.create!(is_open: true, product_id: product.id);
@@ -57,7 +57,7 @@ puts "Seeding #{image_array.length} products"
 
 for url in image_array do
     randomName = Faker::Creature::Animal.name 
-    new_product = Product.create(name: randomName,user_id: User.all.sample.id);
+    new_product = Product.create(name: randomName,user_id: User.all.sample.id, price: rand(123..999));
     filename = File.basename(URI.parse(url).path)
     file = URI.open(url)
     new_product.image.attach(io: file, filename: filename, content_type: 'image/jpg')

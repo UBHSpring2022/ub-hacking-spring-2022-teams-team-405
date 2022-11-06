@@ -6,10 +6,11 @@ import "../styles/MarketItem.scss";
 import coinLogo from "../assets/mozam-logo.png"
 
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const contractAddress = "0x355638a4eCcb777794257f22f50c289d4189F245";
 const abi = contract.abi;
-const Detail = () => {
+const Detail = ({setOpenModal,setIsMining}) => {
     const navigate = useNavigate();
     const [product, setProduct] = useState({})
     const [seller, setSeller] = useState({})
@@ -28,6 +29,7 @@ const Detail = () => {
         // console.log("result", result);
         if(result.error){
             // FAILED
+					Swal.fire(data["error"], data["message"], "error");
         }else{
             // success
             setProduct(result)
@@ -87,9 +89,17 @@ const Detail = () => {
         let nftTxn = await nftContract.mintNFTs(1, { value: ethers.utils.parseEther("0.000000001") });
 
         console.log("Mining... please wait");
+        setIsMining(true)
+        setOpenModal(true)
         await nftTxn.wait();
+        setIsMining(false)
+        setOpenModal(false)
 
-        alert(`Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`);
+        Swal.fire(
+          'Mined Successfully 👷🏽!',
+          'See transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}',
+          'success'
+        )
         let product_id = window.location.href.match(/\d+$/)[0]
         fetch('http://localhost:3000/complete-order', {
             method: "POST",

@@ -1,9 +1,10 @@
 .Modal {
 	&-container {
-        border: 2px solid #000;
+        border: 1px solid #000;
         background-color: whitesmoke;
         padding: 3rem;
         width: 65vw;
+        max-width: 700px;
         position: absolute;
         z-index: 1;
         top: 50%;
