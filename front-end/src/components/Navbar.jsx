@@ -4,12 +4,12 @@ import { HashLink } from "react-router-hash-link";
 
 const Navbar = () => {
 	return (
-		<div className="Navbar">
-            <HashLink smooth to="/#landing-hero">
-			    <img src={coinLogo} alt="Coin" />
+		<div id="landing" className="Navbar">
+			<HashLink smooth to="/#landing">
+				<img src={coinLogo} alt="Coin" />
 			</HashLink>
 			<div className="Navbar-items">
-				<HashLink smooth to="/#Marketplace">
+				<HashLink smooth to="/market">
 					Marketplace
 				</HashLink>
 				<HashLink smooth to="/#About">

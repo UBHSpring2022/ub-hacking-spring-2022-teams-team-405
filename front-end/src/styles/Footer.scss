@@ -1,0 +1,28 @@
+.Footer {
+    max-height: 6rem;
+    background-color: black;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    & a {
+      text-decoration: none;
+      color: white;
+      &:active {
+        color: white;
+      }
+      &:hover {
+        color: #26c6da;
+      }
+    }
+    &__icon-container {
+      display: flex;
+      width: 60vw;
+      min-width: 400px;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+  }
