@@ -10,7 +10,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import ModalView from "./components/ModalView.jsx";
 import PersistProfile from "./components/PersistProfile.jsx";
 import Footer from "./components/Footer.jsx";
-
+import { useState } from 'react'
 function App({cable}) {
 
 
