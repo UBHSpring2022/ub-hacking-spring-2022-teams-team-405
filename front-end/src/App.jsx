@@ -39,7 +39,8 @@ function App({cable}) {
 					}
 				/>
 			</Routes>
-			<Footer />
+      <Footer />
+
 		</>
 	);
 }
