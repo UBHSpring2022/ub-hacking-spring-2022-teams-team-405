@@ -5,6 +5,7 @@ import Register from "./pages/Register.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Chat from "./components/Chat.jsx";
 import Detail from "./pages/Detail.jsx";
+import { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import ModalView from "./components/ModalView.jsx";
 import PersistProfile from "./components/PersistProfile.jsx";

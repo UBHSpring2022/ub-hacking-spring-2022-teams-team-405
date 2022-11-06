@@ -3,18 +3,18 @@ import ChatWebSocket from "./ChatWebSocket";
 import InputEmoji from "react-input-emoji";
 import { Avatar } from "@mui/material";
 import "../styles/Chat.scss";
+import { useSelector } from "react-redux";
 
 function Chat({ cable }) {
+
   const [loaded, setLoaded] = useState(false);
-  console.log("loaded", loaded);
   useEffect(() => {
     fetch(`http://localhost:3000/chat?uuid=${window.location.href.match(/\d+$/)[0]}`,{
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            // "super-token": localStorage.getItem("token"),
-            "super-token": "AGcccDTwnTY1gAXuFUTa5z1sNqfhhc5u4PN6",
+            "super-token": localStorage.getItem("token"),
         },
     })
       .then((response) => response.json())
@@ -32,6 +32,7 @@ function Chat({ cable }) {
   
   
   function ChatBox({setLoaded}){
+    const user = useSelector((state) => state.user);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const messageEl = useRef(null);
@@ -50,8 +51,7 @@ function Chat({ cable }) {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          // "super-token": localStorage.getItem("token"),
-          "super-token": " vHHxHPP75FuqUeML3TkJiFbHKpH4uu3W8Td7",
+          "super-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
           "uuid": window.location.href.match(/\d+$/)[0],
@@ -69,9 +69,10 @@ function Chat({ cable }) {
   
       {messages.map((message) => {
         let sender = false;
+        console.log(user)
         let x = message.created_at.split("T")[1].split(".")[0].split(":")[0] + ":" + message.created_at.split("T")[1].split(".")[0].split(":")[1];
-        if (message.sender === "") { // change to current user
-          sender = false;
+        if (message.sender === user.profile.email) { // change to current user
+          sender = true;
         }
         return (<div key={message.id}>
           <p className={`chat-message ${sender && "chat-receiver"}`}>

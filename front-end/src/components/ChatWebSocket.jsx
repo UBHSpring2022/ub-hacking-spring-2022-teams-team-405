@@ -9,8 +9,7 @@ function ChatWebSocket({ cableApp,messages,setMessages,setLoaded}) {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            // "super-token": localStorage.getItem("token"),
-            "super-token": "AGcccDTwnTY1gAXuFUTa5z1sNqfhhc5u4PN6",
+            "super-token": localStorage.getItem("token"),
         },
     })
       .then((response) => response.json())

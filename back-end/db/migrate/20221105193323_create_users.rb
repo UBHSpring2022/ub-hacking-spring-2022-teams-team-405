@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :password_digest
       t.string :lat
       t.string :long
+      t.string :meta_address
       t.boolean :sms_verified, default: false
       t.boolean :email_verified, default: false
       t.boolean :is_uncle, default: false
