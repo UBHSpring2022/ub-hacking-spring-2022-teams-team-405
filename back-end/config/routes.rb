@@ -15,4 +15,7 @@ Rails.application.routes.draw do
   post "/complete-order", to: "orders#create" 
   get "/products", to: "products#index"
   get "/products/:uuid", to: "products#show"
+  get "/users", to: "users#index"
+  post "/user-detail", to: "users#show"
+  
 end
