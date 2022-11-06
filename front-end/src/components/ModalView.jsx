@@ -16,10 +16,10 @@ import "../styles/Modal.scss";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser, verifyUser } from "../state/user.js";
-
+import pickachuMining from "../assets/pickachu.gif";
 import Swal from "sweetalert2";
 
-const ModalView = ({ setOpenModal, openModal }) => {
+const ModalView = ({ setOpenModal, openModal, isMining }) => {
 	const dispatch = useDispatch();
 
 	const [switchLogin, setSwitchLogin] = useState(true);
@@ -31,27 +31,24 @@ const ModalView = ({ setOpenModal, openModal }) => {
 		e.preventDefault();
 		setIsLoading(true);
 		fetch("http://127.0.0.1:3000/login", {
-		  method: "POST",
+			method: "POST",
 			headers: {
-			  "Content-Type": "application/json",
+				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({...form,phone:form.email}),
-		  })
-			.then(res =>{
-					setIsLoading(false);
-					return res.json()
-				})
-			.then(data => {
-				
-
-				if(data["error"]){
+			body: JSON.stringify({ ...form, phone: form.email }),
+		})
+			.then((res) => {
+				setIsLoading(false);
+				return res.json();
+			})
+			.then((data) => {
+				if (data["error"]) {
 					Swal.fire(data["error"], data["message"], "error");
-				}else{
+				} else {
 					localStorage.setItem("token", data["token"]);
 					dispatch(setUser(data.user));
-					setOpenModal(false)
+					setOpenModal(false);
 				}
-
 			});
 	};
 	let handleSignup = (e) => {
@@ -70,11 +67,11 @@ const ModalView = ({ setOpenModal, openModal }) => {
 				if (data["error"]) {
 					Swal.fire(data["error"], data["message"], "error");
 				} else {
-					if(data["data"]){
+					if (data["data"]) {
 						dispatch(setUser(data.data.user));
 						setVerifySMS(true);
 						localStorage.setItem("token", data.data.token);
-					}else{
+					} else {
 						dispatch(setUser(data.user));
 						setVerifySMS(true);
 						localStorage.setItem("token", data.token);
@@ -111,28 +108,28 @@ const ModalView = ({ setOpenModal, openModal }) => {
 		setIsLoading(true);
 
 		fetch("http://127.0.0.1:3000/verify", {
-		  method: "GET",
+			method: "GET",
 			headers: {
-			  "Content-Type": "application/json",
-			  "super-token": form.sms_token
-			}
-		  })
-			.then(res => {
+				"Content-Type": "application/json",
+				"super-token": form.sms_token,
+			},
+		})
+			.then((res) => {
 				setIsLoading(false);
-				return res.json()
+				return res.json();
 			})
-			.then(data => {
+			.then((data) => {
 				if (data["error"]) {
 					Swal.fire(data["error"], data["message"], "error");
 				} else {
-					dispatch(verifyUser())
-					setOpenModal(false)
+					dispatch(verifyUser());
+					setOpenModal(false);
 				}
 			});
 	};
 	useEffect(() => {
 		setForm({});
-	}, [switchLogin,verifySMS]);
+	}, [switchLogin, verifySMS]);
 	return (
 		<>
 			<Modal
@@ -142,7 +139,13 @@ const ModalView = ({ setOpenModal, openModal }) => {
 				aria-describedby="modal-modal-description">
 				<div className="Modal">
 					<div className="Modal-container">
-						{verifySMS ? (
+						{isMining ? (
+							<>
+								<h1>Mining ...</h1>
+								<img src={pickachuMining} alt="Mining" />
+								<CircularProgress fontSize="Large" sx={{ color: "purple" }} />
+							</>
+						) : verifySMS ? (
 							<>
 								<h1>Enter SMS code</h1>
 								<form onSubmit={handleVerify}>

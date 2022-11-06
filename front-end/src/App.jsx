@@ -13,7 +13,7 @@ import Footer from "./components/Footer.jsx";
 
 function App({cable}) {
 
-
+	const [isMining, setIsMining] = useState(false)
 	const [openModal, setOpenModal] = useState(false);
 	const navigate = useNavigate();
 	let handleOpenModal = () => {
@@ -22,11 +22,11 @@ function App({cable}) {
 	return (
 		<>
 			<PersistProfile />
-			<ModalView setOpenModal={setOpenModal} openModal={openModal}/>
+			<ModalView isMining={isMining} setOpenModal={setOpenModal} openModal={openModal}/>
 			<Navbar handleOpenModal={handleOpenModal} />
 			<Routes>
 				<Route path="/" element={<Landing />} />
-				<Route path="/detail/:uuid" element={<Detail/>} />
+				<Route path="/detail/:uuid" element={<Detail setOpenModal={setOpenModal} setIsMining={setIsMining}/>} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/chat/:uuid" element={<Chat cable={cable}/>} />
 				<Route path="/market" element={<Market />} />
