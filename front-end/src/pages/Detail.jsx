@@ -2,11 +2,12 @@ import "../styles/Detail.scss";
 import { useEffect, useState } from "react";
 import contract from './nft.json';
 import { ethers } from 'ethers';
+import { useNavigate } from "react-router-dom";
 
 const contractAddress = "0x355638a4eCcb777794257f22f50c289d4189F245";
 const abi = contract.abi;
-
 const Detail = () => {
+    const navigate = useNavigate();
     const [product, setProduct] = useState({})
     const [seller, setSeller] = useState({})
     const [currentAccount, setCurrentAccount] = useState(null);
@@ -105,6 +106,7 @@ const Detail = () => {
                 // FAILED
             }else{
                 // success
+                navigate('/market')
                 console.log("result", result);
             }
         });

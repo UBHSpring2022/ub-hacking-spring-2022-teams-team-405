@@ -50,6 +50,11 @@ image_array = [
 ]
 puts "Seeding #{image_array.length} products"
 
+# url = "https://tnaqua.org/app/uploads/2020/05/ID_LakeSturgeon_1200x490-e1594413569807-1200x0-c-default.jpg"
+# filename = File.basename(URI.parse(url).path)
+#     file = URI.open(url)
+#     product.image.attach(io: file, filename: filename, content_type: 'image/jpg')
+
 for url in image_array do
     randomName = Faker::Creature::Animal.name 
     new_product = Product.create(name: randomName,user_id: User.all.sample.id);
