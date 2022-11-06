@@ -1,5 +1,6 @@
 import About from "../components/About.jsx";
 import Lore from "../components/Lore.jsx";
+
 import Foundry from "../assets/brands/Foundry.png";
 import ACV from "../assets/brands/ACV.png";
 import IQVIA from "../assets/brands/IQVIA.png";
