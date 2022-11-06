@@ -24,7 +24,7 @@ const Market = () => {
 		<div className="Market">
 			<div className="Market-title">
 				<img src={coinLogo} alt="Coin" />
-				<h1>Explore, Collect, and Sell Rare Fish</h1>
+				<h1><span className="Market-title-explore">Explore</span>,<span className="Market-title-collect">Collect</span>, and Sell<span className="Market-title-ex">!</span> Rare Fish</h1>
 			</div>
 			<div className="Market-searchbar-container">
 				<SearchRoundedIcon fontSize="large" sx={{ position: "absolute", padding: "1rem" }} />
