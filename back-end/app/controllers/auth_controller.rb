@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  before_action :authorize, only: [:me]
+  before_action :authorize, only: [:verify]
   rescue_from Twilio::REST::RestError, with: :twilio_error
 
   def send_sms
@@ -26,14 +26,10 @@ class AuthController < ApplicationController
     render json: {message: "sent"}
   end
 
-  def verifyme
+  def verify
     render json: @user
   end
   
-  def me
-    render json: @user
-  end
-
   def login
     user_found = User.find_by(email:params[:email]) || User.find_by!(phone:params[:phone])
 
