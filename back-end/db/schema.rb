@@ -75,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_05_202928) do
     t.boolean "is_uncle", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
 end

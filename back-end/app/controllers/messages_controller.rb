@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
         room = Room.find(params[:uuid])
         if is_authorized?(room)
             render json: room
+            
         else
             render json: {error: "401 Unauthorized", message:"You are not authorized to view this room"},status: :unauthorized
         end
