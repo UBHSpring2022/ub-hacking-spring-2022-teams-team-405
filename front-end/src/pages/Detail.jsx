@@ -97,7 +97,7 @@ const Detail = ({setOpenModal,setIsMining}) => {
 
         Swal.fire(
           'Mined Successfully 👷🏽!',
-          'See transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}',
+          `See transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`,
           'success'
         )
         let product_id = window.location.href.match(/\d+$/)[0]
