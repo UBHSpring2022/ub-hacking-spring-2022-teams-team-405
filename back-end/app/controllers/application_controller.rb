@@ -2,11 +2,13 @@ class ApplicationController < ActionController::API
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
     rescue_from ActiveRecord::RecordNotUnique, with: :render_entity_not_unique_response
+    
 
     def authorize
         @verify = SuperToken.vaildate_super request
-
         if @verify[:user]
+            # no errors during vaildation
+            @validated_token = @verify[:token] # this line is here so i dont need to run another sql query to find the token entry
             @user = @verify[:user]
         else
             render json: @verify

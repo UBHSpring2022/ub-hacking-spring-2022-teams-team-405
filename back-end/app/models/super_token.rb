@@ -6,7 +6,6 @@ class SuperToken < ApplicationRecord
     LIMIT_TOKENS_PER_USER = 0 # MINIMUN IS 2!!! sms tokens take 1 slot 
     AUTO_REFRESH = true
     DAYS_TO_EXPIRE = 10000
-    SMS_EXPIRY = 10 # in minutes 
 
     def self.generate_token(user,request, sms=false)
         if user && request
@@ -45,37 +44,26 @@ class SuperToken < ApplicationRecord
     def self.vaildate_super request
         token = request.headers["super-token"]
         if !token
-            return {status: "bad", error:"Header Not Found", message:"Header needs to called super-token not anything else"}
+            return { error:"Header Not Found", message:"Header needs to called super-token not anything else"}
         end
         super_token = SuperToken.find_by(token:token)
         if !super_token
-            return {status: "bad", error:"SuperToken Incorrect", message:"Token doesnt exist in database"}
-        end
-        if super_token.is_sms
-            age_of_token = Time.now.to_i - super_token.created_at.to_i 
-            user = super_token.user
-            super_token.destroy
-            if(age_of_token < SMS_EXPIRY*60)
-                user.update(is_verified: true)
-                return {status: "ok", message:"verified user"}
-            else
-                return {status: "bad", error:"401 not authorized", message:"EXPIRED SMS TOKEN"}
-            end
+            return { error:"SuperToken Incorrect", message:"Token doesnt exist in database"}
         end
         if super_token.agent == request.user_agent
             if is_expired super_token.expiry.to_i
                 # super_token.destroy     THIS IS ONLY FOR THIS PROJECT B/C WE WANT TO TRACK ALL TOKENS 
-                {status: "bad", error:"401 not authorized", message:"EXPIRED TOKEN"}
+                { error:"401 not authorized", message:"EXPIRED TOKEN"}
             else
                 if AUTO_REFRESH 
                     super_token.update(expiry: Time.now)
                 else
                     super_token.update(updated_at: Time.now)
                 end
-                 {status: "ok", user:super_token.user}
+                return {user:super_token.user, token: super_token}
             end
         else
-            {status: "bad", error:"403 forbidden", message:"DIFFERENT DEVICE "}
+            { error:"403 forbidden", message:"DIFFERENT DEVICE "}
         end
     end
 

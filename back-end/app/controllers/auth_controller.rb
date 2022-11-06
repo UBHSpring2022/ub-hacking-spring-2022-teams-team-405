@@ -1,6 +1,8 @@
 class AuthController < ApplicationController
-  before_action :authorize, only: [:verify]
+  before_action :authorize, only: [:verify,:profile]
   rescue_from Twilio::REST::RestError, with: :twilio_error
+  
+  SMS_EXPIRY = 10 # in minutes 
 
   def send_sms
     token = SuperToken.generate_token(@@user, request,true)
@@ -27,6 +29,22 @@ class AuthController < ApplicationController
   end
 
   def verify
+    if @validated_token.is_sms
+      age_of_token = Time.now.to_i - @validated_token.created_at.to_i 
+      user = @validated_token.user
+      @validated_token.destroy
+      if(age_of_token < SMS_EXPIRY*60)
+        user.update(sms_verified: true)
+         render json: {message:"Verified user"}
+      else
+         render json: { error:"401 not authorized", message:"EXPIRED SMS TOKEN"}
+      end
+    else
+       render json: { error:"401 not authorized", message:"Not SMS Token type"}
+    end
+  end
+  
+  def profile
     render json: @user
   end
   

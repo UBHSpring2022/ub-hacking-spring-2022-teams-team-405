@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   post "/textme", to: "auth#textme" 
   get "/verify", to: "auth#verify" 
+  get "/profile", to: "auth#profile" 
   post "/login", to: "auth#login" 
   post "/signup", to: "auth#signup" 
   get "/chat", to: "messages#index"
