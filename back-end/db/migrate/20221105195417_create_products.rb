@@ -4,6 +4,7 @@ class CreateProducts < ActiveRecord::Migration[7.0]
       t.string :name
       t.string :price
       t.integer :user_id
+      t.boolean :is_active, default: true
 
       t.timestamps
     end

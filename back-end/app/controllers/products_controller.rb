@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
     before_action :authorize, only: [:create]
     def index
-        render json: Product.all # make limiter
+        render json: Product.all.where(is_active: true) # make limiter
     end
 
     def show
