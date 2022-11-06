@@ -24,6 +24,9 @@ const Navbar = ({handleOpenModal}) => {
 			}
 		  })
 	} 
+	let handleSMSClick = () => {
+	  
+	}
 	return (
 		<div id="landing" className="Navbar">
 			<HashLink smooth to="/#landing">
@@ -39,7 +42,7 @@ const Navbar = ({handleOpenModal}) => {
 				<HashLink smooth to="/#Lore">
 					Lore
 				</HashLink>
-				<HashLink smooth to="/#Lore">
+				<HashLink onClick={handleSMSClick}  smooth to="/#landing">
 					Verifyme
 				</HashLink>
 				{user.isAuthenticated ?  <button onClick={handleSignout}>{user.isVerified? <VerifiedRoundedIcon/> : ""}{user.profile.display_name}</button> : <button onClick={handleOpenModal}>Login / Register</button>}
