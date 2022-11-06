@@ -5,34 +5,63 @@ import { Avatar } from "@mui/material";
 import "../styles/Chat.scss";
 
 function Chat({ cable }) {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const messageEl = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+  console.log("loaded", loaded);
   useEffect(() => {
-    if (messageEl) {
-      messageEl.current.addEventListener("DOMNodeInserted", (event) => {
-        const { currentTarget: target } = event;
-        target.scroll({ top: target.scrollHeight, behavior: "smooth" });
-      });
-    }
-  }, []);
-  function handleSubmit(){
-    fetch(`http://localhost:3000/send-message`,{
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        // "super-token": localStorage.getItem("token"),
-        "super-token": " vHHxHPP75FuqUeML3TkJiFbHKpH4uu3W8Td7",
-    },
-    body: JSON.stringify({
-        "uuid": window.location.href.match(/\d+$/)[0],
-        "content": newMessage,
-    }),
+    fetch(`http://localhost:3000/chat?uuid=${window.location.href.match(/\d+$/)[0]}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            // "super-token": localStorage.getItem("token"),
+            "super-token": "AGcccDTwnTY1gAXuFUTa5z1sNqfhhc5u4PN6",
+        },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log("result", result);
+        if(result.error){
+            // FAILED
+            setLoaded(false)
+        }else{
+            // success
+            setLoaded(true)
+        }
+        });
+  }, [])
+  
+  
+  function ChatBox({setLoaded}){
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState("");
+    const messageEl = useRef(null);
 
-  })
-  }
-  return <div className="chat">
+    useEffect(() => {
+      if (messageEl) {
+        messageEl.current.addEventListener("DOMNodeInserted", (event) => {
+          const { currentTarget: target } = event;
+          target.scroll({ top: target.scrollHeight, behavior: "smooth" });
+        });
+      }
+    }, []);
+    function handleSubmit(){
+      fetch(`http://localhost:3000/send-message`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          // "super-token": localStorage.getItem("token"),
+          "super-token": " vHHxHPP75FuqUeML3TkJiFbHKpH4uu3W8Td7",
+      },
+      body: JSON.stringify({
+          "uuid": window.location.href.match(/\d+$/)[0],
+          "content": newMessage,
+      }),
+    })
+    }
+
+    return(
+      <div className="chat">
     <div className="chat-header">
       <Avatar style={{ height: "7vh", width: "7vh" }} src={`https://avatars.dicebear.com/api/adventurer/your-custom-seed.svg`} />
     </div>
@@ -62,11 +91,18 @@ function Chat({ cable }) {
           onEnter={() => handleSubmit()}        
           value={newMessage}
           onChange={setNewMessage}
-        />
+          />
       </form>
     </div>
-    <ChatWebSocket cableApp={cable} messages={messages} setMessages={setMessages} />
-  </div>;
+    <ChatWebSocket cableApp={cable} messages={messages} setMessages={setMessages} setLoaded={setLoaded} />
+    </div>
+    )
+  }
+  return (
+    <>
+    {loaded? <ChatBox setLoaded={setLoaded}/>: <h1 className="error">Page Not Found</h1>}
+    </>
+  );
 
 }
 

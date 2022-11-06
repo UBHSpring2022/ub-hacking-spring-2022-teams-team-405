@@ -10,6 +10,14 @@
     background-color: #5206ed;
     margin-top: 2.5vh;
   }
+  .error{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    font-size: 64px;
+  }
   .chat-header {
     padding: 5px;
     display: flex;
@@ -51,7 +59,7 @@
   }
   .chat-message {
     position: relative;
-    font-size: 16px;
+    font-size: 24px;
     padding: 10px;
     background-color: #d4ebf2;
     width: fit-content;
@@ -85,12 +93,12 @@
     position: absolute;
     top: -15px;
     font-weight: 800;
-    font-size: xx-small;
+    font-size: small;
   }
   
   .chat-timestamp {
     margin-left: 10px;
-    font-size: xx-small;
+    font-size: small;
   }
   .chat-sender {
     background-color: #d4ebf2;

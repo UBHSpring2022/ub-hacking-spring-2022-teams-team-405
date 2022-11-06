@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-function ChatWebSocket({ cableApp,messages,setMessages}) {
-    // console.log(messages)
-    // console.log(setMessages)
+function ChatWebSocket({ cableApp,messages,setMessages,setLoaded}) {
   const location = useLocation();
   const getRoomData = (uuid) => {
     fetch(`http://localhost:3000/chat?uuid=${uuid}`,{
@@ -20,8 +18,10 @@ function ChatWebSocket({ cableApp,messages,setMessages}) {
         // console.log("result", result);
         if(result.error){
             // FAILED
+            setLoaded(false)
         }else{
             // success
+            setLoaded(true)
             setMessages(result.messages);
         }
         });
