@@ -8,13 +8,11 @@ const Lore = () => {
         Lore
       </h1>
       <img src={FishImg} alt="Fish" />
-
-      <p className="Lore-Description1">
-        Once fluttering through the seas, <br />
-        quickly reduced to
-        <span className="Lore-Description-dra1">nothing...</span>
+      <p>
+		Under development 
+        {/* <span className="Lore-Description-dra1">nothing...</span> */}
       </p>
-      <p className="Lore-Description2">
+      {/* <p className="Lore-Description2">
         Only the worst and
         <span className="Lore-Description-dra2">worst of the worst</span> <br />
         to have caused such madness.
@@ -45,7 +43,7 @@ const Lore = () => {
         Zara employees forced the uncles to continue mining rare earth metals
         and prompted the extinction of the Rare fish
       </p>
-      <p className="Lore-Description9">Rare fish were gone...</p>
+      <p className="Lore-Description9">Rare fish were gone...</p> */}
 
     </div>
   );
