@@ -1,0 +1,66 @@
+.MarketItem{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    width: 10rem;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid black;
+    max-height: 15rem;
+    min-height: 15rem;
+    &:hover{
+        cursor: pointer;
+    }
+    &-body{
+        width: 90%;
+        padding: 5px;
+
+    }
+    &-title{
+        padding-bottom: 1rem;
+        width: 100%;
+        font-size: 0.8rem;
+        & h2{
+         font-size: 0.75rem;
+            
+        }
+    }
+    &-image-container{
+        height: 5rem;
+        overflow: hidden;
+        background-color: black;
+        & img {
+            width: 100%;
+        }
+
+    }
+    &-price{
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        & img{
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        & span {
+            font-weight: 900;
+            background: linear-gradient(0deg, var(--accent-color), var(--accent-color), #2196f3, #26c6da);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+    & h3{
+        background-color: #2196f3;
+        width: 100%;
+        text-align: center;
+        font-size: 0.8rem;
+        color: white;
+        padding: 0.5rem;
+    }
+}
