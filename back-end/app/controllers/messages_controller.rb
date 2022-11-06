@@ -1,22 +1,38 @@
 class MessagesController < ApplicationController
-    before_action :authorize, only: [:index]
+    before_action :authorize
     def index
-        room = Room.find(params[:room_id])
-        if room
-            if room.users.where(id: @user.id)
-                render json: room.messages
-            else
-                render json: {error: "401 Unauthorized", message:"You are not authorized to view this room"}
-            end
+        room = Room.find(params[:uuid])
+        if is_authorized?(room)
+            render json: room
         else
-            render json: {error: "404 not found", message: "Invalid Room uuid"}, status: :not_found
+            render json: {error: "401 Unauthorized", message:"You are not authorized to view this room"},status: :unauthorized
         end
     end
 
     def create
-                # RoomsChannel.broadcast_to(room, {
-        #     messages: room.messages
-        # })
-        
+        room = Room.find(params[:uuid])
+        if is_authorized?(room)
+            message = Message.create!(user_id: @user.id, room_id: room.id, content: params[:content])
+            RoomsChannel.broadcast_to(room, {
+                messages: room.messages
+            })
+        else
+            render json: {error: "401 Unauthorized", message:"You are not authorized to view this room"},status: :unauthorized
+        end
+    end
+
+    private 
+
+    def is_authorized?(room)
+        if room.is_open
+            if room.users.where(id: @user.id)
+                true
+            else
+               false
+            end
+        else
+            false
+        end
     end
 end
+
