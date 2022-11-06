@@ -5,7 +5,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
     & img{
         width: 15%;
         max-width: 12rem;
@@ -18,7 +17,8 @@
     &-items{
         display: flex;
         width: 60%;
-        justify-content: space-between;
+        max-width: 50rem;
+        justify-content: space-evenly;
         align-items: center;
         margin-right: 1rem;
 
@@ -45,5 +45,12 @@
                 text-decoration: underline;
             }
         }
+    }
+}
+@media (max-width: 600px) {
+
+    .Navbar-items{
+        flex-direction: column-reverse;
+        margin: 1rem;
     }
 }
