@@ -122,7 +122,7 @@ const Detail = () => {
 
   const connectWalletButton = () => {
     return (
-      <button onClick={connectWalletHandler} className='cta-button connect-wallet-button'>
+      <button onClick={connectWalletHandler} className="second">
         Connect Wallet
       </button>
     )
@@ -130,8 +130,8 @@ const Detail = () => {
 
   const mintNftButton = () => {
     return (
-      <button onClick={mintNftHandler} className='cta-button mint-nft-button'>
-        Mint NFT
+      <button className="second" onClick={mintNftHandler}>
+        Buy 
       </button>
     )
   }
@@ -155,8 +155,31 @@ const Detail = () => {
                     <p>{seller.display_name}</p>
                     <p>{product.price}</p>
                 </div>
-                <button className="first">Message Seller</button>
-                <button className="second" onClick={()=> handleBuy()}>Buy</button>
+                <button className="first" onClick={()=>{
+                    let product_id = window.location.href.match(/\d+$/)[0]
+                    fetch('http://localhost:3000/create-room', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "super-token": localStorage.getItem("token")
+                        },
+                        body: JSON.stringify({
+                            product_uuid: product_id,
+                            seller_email: seller.email
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        // console.log("result", result);
+                        if(result.error){
+                            // FAILED
+                        }else{
+                            // success
+                            navigate(`/chat/${result.id}`)
+                        }
+                    })
+                }}>Message Seller</button>
                 {currentAccount ? mintNftButton() : connectWalletButton()}
             </div>
 		</div>

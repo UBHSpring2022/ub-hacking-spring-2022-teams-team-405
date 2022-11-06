@@ -63,7 +63,7 @@ function Chat({ cable }) {
     return(
       <div className="chat">
     <div className="chat-header">
-      <Avatar style={{ height: "7vh", width: "7vh" }} src={`https://avatars.dicebear.com/api/adventurer/your-custom-seed.svg`} />
+      <Avatar style={{ height: "7vh", width: "7vh" }} src={`https://avatars.dicebear.com/api/adventurer/${Math.floor(Math.random() * 5000)}.svg`} />
     </div>
     <div className="chat-body" ref={messageEl}>
   
