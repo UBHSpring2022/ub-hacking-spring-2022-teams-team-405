@@ -18,4 +18,7 @@ Rails.application.routes.draw do
   get "/users", to: "users#index"
   post "/user-detail", to: "users#show"
   
+  #  This  Route uses form data to create a new product
+  post "/create-product", to: "products#create"
+  
 end
