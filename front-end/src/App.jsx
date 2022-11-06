@@ -1,4 +1,3 @@
-import './styles/App.scss'
 import Landing from './pages/Landing.jsx'
 function App() {
 
