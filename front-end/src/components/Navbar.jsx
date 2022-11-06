@@ -23,7 +23,7 @@ const Navbar = ({handleOpenModal}) => {
 				dispatch(clearUser())
 			}
 		  })
-	}
+	} 
 	return (
 		<div id="landing" className="Navbar">
 			<HashLink smooth to="/#landing">
@@ -38,6 +38,9 @@ const Navbar = ({handleOpenModal}) => {
 				</HashLink>
 				<HashLink smooth to="/#Lore">
 					Lore
+				</HashLink>
+				<HashLink smooth to="/#Lore">
+					Verifyme
 				</HashLink>
 				{user.isAuthenticated ?  <button onClick={handleSignout}>{user.isVerified? <VerifiedRoundedIcon/> : ""}{user.profile.display_name}</button> : <button onClick={handleOpenModal}>Login / Register</button>}
 				
