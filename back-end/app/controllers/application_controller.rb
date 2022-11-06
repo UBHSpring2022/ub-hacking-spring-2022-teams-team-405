@@ -13,6 +13,18 @@ class ApplicationController < ActionController::API
         end
     end
 
+    def is_authorized?(room)
+        if room.is_open
+            if room.users.where(id: @user.id)
+                true
+            else
+               false
+            end
+        else
+            false
+        end
+    end
+
     private
     def render_not_found_response(exception)
     render json: { error: "#{exception.model} not found"}, status: :not_found

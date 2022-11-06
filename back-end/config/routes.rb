@@ -10,4 +10,9 @@ Rails.application.routes.draw do
   post "/signup", to: "auth#signup" 
   get "/chat", to: "messages#index"
   post "/send-message", to: "messages#create"
+  post "/create-room", to: "rooms#create"
+  get "/order-history", to: "orders#index" 
+  post "/complete-order", to: "orders#create" 
+  get "/products", to: "products#index"
+  get "/products/:uuid", to: "products#show"
 end

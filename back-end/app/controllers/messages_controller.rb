@@ -21,19 +21,5 @@ class MessagesController < ApplicationController
             render json: {error: "401 Unauthorized", message:"You are not authorized to view this room"},status: :unauthorized
         end
     end
-
-    private 
-
-    def is_authorized?(room)
-        if room.is_open
-            if room.users.where(id: @user.id)
-                true
-            else
-               false
-            end
-        else
-            false
-        end
-    end
 end
 

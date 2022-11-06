@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_05_202928) do
 
   create_table "rooms", force: :cascade do |t|
     t.boolean "is_open"
+    t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

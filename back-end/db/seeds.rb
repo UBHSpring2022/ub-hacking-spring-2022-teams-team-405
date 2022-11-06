@@ -15,9 +15,15 @@ Message.destroy_all
 puts "Seeding the ZARA employees"
 santo = User.create!(display_name: "Santo", email:"Santo@mozam.com",phone:"9294226244",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 mohamed = User.create!(display_name: "Mohamed", email:"mohamed@muflahi.dev",phone:"9294226224",password: "12345", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
+mustafa = User.create!(display_name: "Mustafa", email:"mustafa@binalhag.dev",phone:"9294226250",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 
 puts "Seeding the ZARA chats"
-room = Room.create!(is_open: true);
+# product = Product.create!(name: "ZARA T-Shirt", price: 20, description: "A ZARA T-Shirt", user_id: santo.id); # lol
+product = Product.create!(name: "ZARA T-Shirt",user_id: santo.id);
+product2 = Product.create!(name: "ZARA ",user_id: mustafa.id);
+
+
+room = Room.create!(is_open: true, product_id: product.id);
 Chat.create!(user_id: santo.id, room_id: room.id);
 Chat.create!(user_id: mohamed.id, room_id: room.id);
 puts "Seeding the ZARA messages"
