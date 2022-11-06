@@ -3,7 +3,7 @@ class User < ApplicationRecord
     validates_presence_of :display_name
     validates_presence_of :email
     validates_presence_of :phone
-    has_many :supertokens
+    has_many :super_tokens
     has_many :orders
     has_many :products
     has_many :messages
