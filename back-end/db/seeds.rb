@@ -16,6 +16,7 @@ puts "Seeding the ZARA employees"
 santo = User.create!(display_name: "Santo", email:"Santo@mozam.com",phone:"9294226244",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 mohamed = User.create!(display_name: "Mohamed", email:"mohamed@muflahi.dev",phone:"9294226224",password: "12345", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
 mustafa = User.create!(display_name: "Mustafa", email:"mustafa@binalhag.dev",phone:"9294226250",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:true)
+not_uncle = User.create!(display_name: "Mustafa", email:"test_uncle",phone:"1232131232",password: "123", lat: "43",long: "43",sms_verified:true,email_verified:true,is_uncle:false)
 
 puts "Seeding the ZARA chats"
 # product = Product.create!(name: "ZARA T-Shirt", price: 20, description: "A ZARA T-Shirt", user_id: santo.id); # lol
