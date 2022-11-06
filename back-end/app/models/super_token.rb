@@ -50,7 +50,7 @@ class SuperToken < ApplicationRecord
         if !super_token
             return { error:"SuperToken Incorrect", message:"Token doesnt exist in database"}
         end
-        if super_token.agent == request.user_agent
+        # if super_token.agent == request.user_agent
             if is_expired super_token.expiry.to_i
                 # super_token.destroy     THIS IS ONLY FOR THIS PROJECT B/C WE WANT TO TRACK ALL TOKENS 
                 { error:"401 not authorized", message:"EXPIRED TOKEN"}
@@ -62,9 +62,9 @@ class SuperToken < ApplicationRecord
                 end
                 return {user:super_token.user, token: super_token}
             end
-        else
-            { error:"403 forbidden", message:"DIFFERENT DEVICE "}
-        end
+        # else
+            # { error:"403 forbidden", message:"DIFFERENT DEVICE "}
+        # end
     end
 
 

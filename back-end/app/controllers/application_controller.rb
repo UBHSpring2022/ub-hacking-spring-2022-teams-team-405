@@ -32,9 +32,9 @@ class ApplicationController < ActionController::API
     render json: { error: "#{exception.model} not found"}, status: :not_found
     end
     def render_unprocessable_entity_response(exception)
-    render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+    render json: { error: exception.record.errors.full_messages }, status: :unprocessable_entity
     end
     def render_entity_not_unique_response(exception)
-        render json: { errors: "An account with that email or phone number already exists, please log in." }, status: :unprocessable_entity
+        render json: { error: "An account with that email or phone number already exists, please log in." }, status: :unprocessable_entity
     end
 end
