@@ -13,6 +13,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        background-image: url("../assets/Fish1.png");
+        background-position: right;
+        background-size: 40vw;
+        background-repeat: no-repeat;
         &-brands{
             display: flex;
             flex-wrap: wrap;
@@ -114,20 +118,23 @@
     }
 
 }
-
-.Lore {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  height: fit-content;
-  margin: 5vh;
-  font-size: 1rem;
-  &-title {
-    border: 1px solid red;
-  }
-  &-description{
-    border: 1px solid red;
-  }
+.Lore{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    &-title{
+        background: linear-gradient(0deg, var(--accent-color), var(--accent-color), #2196f3, #26c6da);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 5vh;
+    }
+    &-paragraph{
+        max-width: 35rem;
+        line-height: 2rem;
+        text-indent: 1rem;
+        text-align: center;
+    }
 }
