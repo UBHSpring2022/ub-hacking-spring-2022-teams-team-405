@@ -11,6 +11,28 @@
         & img{
             width: 5rem;
         }
+        &-explore{
+            background: linear-gradient(to right, var(--accent-color), var(--accent-color), #2196f3, #26c6da);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        &-collect{
+            background: linear-gradient(
+            180deg,
+            transparent 75%,
+            #946ef4 75%,
+            #946ef4 87%,
+            #5d21f3 90%,
+            transparent 90%
+          );
+        }
+        &-ex{
+            background: linear-gradient(0deg, #ec636e, #ec636e, #76c400, #76c400, #ffc905);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     }
     &-map-container{
         margin-top: 5rem;
