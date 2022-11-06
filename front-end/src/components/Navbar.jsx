@@ -2,7 +2,7 @@ import "../styles/Navbar.scss";
 import coinLogo from "../assets/landing/mozam-logo-text.png";
 import { HashLink } from "react-router-hash-link";
 
-const Navbar = () => {
+const Navbar = ({handleOpenModal}) => {
 	return (
 		<div id="landing" className="Navbar">
 			<HashLink smooth to="/#landing">
@@ -18,7 +18,7 @@ const Navbar = () => {
 				<HashLink smooth to="/#Lore">
 					Lore
 				</HashLink>
-				<button>Login / Register</button>
+				<button onClick={handleOpenModal}>Login / Register</button>
 			</div>
 		</div>
 	);
