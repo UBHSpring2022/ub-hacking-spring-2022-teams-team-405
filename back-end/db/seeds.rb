@@ -35,11 +35,11 @@ Message.create!(user_id: santo.id, room_id: room.id, content: "Hello, how can I 
 
 image_array = [
     'https://tnaqua.org/app/uploads/2020/05/ID_LakeSturgeon_1200x490-e1594413569807-1200x0-c-default.jpg',
-    'https://himalayanoutback.com/wp-content/uploads/2022/04/Smalltooth-Sawfish-600x680.jpg',
+    'https://static.dw.com/image/19182487_401.jpg',
     'https://himalayanoutback.com/wp-content/uploads/2022/04/Kissing-Loach-Himalayan-Outback.jpg',
-    'https://himalayanoutback.com/wp-content/uploads/2022/04/Giant-Sea-Bass-768x474.jpg',
-    'https://himalayanoutback.com/wp-content/uploads/2022/04/Tequila-Splitfin-600x400.jpg',
-    'https://himalayanoutback.com/wp-content/uploads/2022/04/Devils-Hole-Pupfish-600x377.jpg',
+    'https://cdn.britannica.com/07/162207-050-3D35600C/Puffer-Fish.jpg?w=600&q=60',
+    'https://images.saymedia-content.com/.image/t_share/MTg0NjE4NzQ2NDMzMDUzODE2/top-10-most-beautiful-fish-in-the-world.jpg',
+    'https://30a.com/wp-content/uploads/2021/12/Untitled-design-2.png',
     'https://himalayanoutback.com/wp-content/uploads/2022/04/Red-Handfish-600x390.jpg',
     'https://himalayanoutback.com/wp-content/uploads/2022/04/Sakhalin-Sturgeon-600x400.jpg',
     'https://himalayanoutback.com/wp-content/uploads/2022/04/Ornate-Sleeper-Ray-1-600x450.jpg',
@@ -50,17 +50,18 @@ image_array = [
 ]
 puts "Seeding #{image_array.length} products"
 
-# url = "https://tnaqua.org/app/uploads/2020/05/ID_LakeSturgeon_1200x490-e1594413569807-1200x0-c-default.jpg"
-# filename = File.basename(URI.parse(url).path)
-#     file = URI.open(url)
-#     product.image.attach(io: file, filename: filename, content_type: 'image/jpg')
-
+counter = 1
 for url in image_array do
-    randomName = Faker::Creature::Animal.name 
-    new_product = Product.create(name: randomName,user_id: User.all.sample.id, price: rand(123..999));
-    filename = File.basename(URI.parse(url).path)
-    file = URI.open(url)
-    new_product.image.attach(io: file, filename: filename, content_type: 'image/jpg')
-    puts "Seeded a product"
+    begin
+        randomName = Faker::Creature::Animal.name 
+        new_product = Product.create(name: randomName,user_id: User.all.sample.id, price: rand(123..999));
+        filename = File.basename(URI.parse(url).path)
+        file = URI.open(url)
+        new_product.image.attach(io: file, filename: filename, content_type: 'image/jpg')
+        puts "Seeded #{counter} product"
+        counter += 1
+    rescue Exception => e
+        p e.message, e.backtrace.inspect
+    end
 end
 puts "Finshed seeding"
