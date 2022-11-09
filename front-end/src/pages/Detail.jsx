@@ -44,7 +44,7 @@ const Detail = ({ setOpenModal, setIsMining }) => {
 		const { ethereum } = window;
 
 		if (!ethereum) {
-			console.log("Make sure you have Metamask installed!");
+			Swal.fire('Error', "Please install Metamask!", 'error')
 			return;
 		} else {
 			console.log("Wallet exists! We're ready to go!");
@@ -65,7 +65,8 @@ const Detail = ({ setOpenModal, setIsMining }) => {
 		const { ethereum } = window;
 
 		if (!ethereum) {
-			alert("Please install Metamask!");
+			Swal.fire('Error', "Please install Metamask!", 'error')
+
 		}
 
 		try {
