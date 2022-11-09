@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  before_action :authorize, only: [:verify,:profile]
+  before_action :authorize, only: [:verify,:profile,:textme]
   rescue_from Twilio::REST::RestError, with: :twilio_error
   
   SMS_EXPIRY = 10 # in minutes 
@@ -19,7 +19,9 @@ class AuthController < ApplicationController
     )
   end
   def textme
-    @@user = User.find_by(email:params[:email]) || User.find_by!(phone:params[:phone])
+    # @@user = User.find_by(email:params[:email]) || User.find_by!(phone:params[:phone])
+    @@user = @user # bad code but it was a quick fix
+    @@supertoken = false
     if (@@user.sms_verified == true)
       return render json: {message: "You are already verified through SMS"}
     end
@@ -71,6 +73,10 @@ class AuthController < ApplicationController
 
 
   def twilio_error(exception)
+    if @@supertoken 
       render json: { _error: exception.error_message, data:{user:UserSerializer.new(@@user), token: @@supertoken.token} }, status: 400 
+    else
+      render json: { _error: exception.error_message, data:{user:UserSerializer.new(@@user)} }, status: 400 
+    end
   end
 end

@@ -141,7 +141,7 @@ const ModalView = ({ setOpenModal, openModal, isMining }) => {
 					<div className="Modal-container">
 						{isMining ? (
 							<>
-								<h1>Mining ...</h1>
+								<h1>Minting NFT ...</h1>
 								<img src={pickachuMining} alt="Mining" />
 								<CircularProgress fontSize="Large" sx={{ color: "purple" }} />
 							</>
@@ -168,7 +168,10 @@ const ModalView = ({ setOpenModal, openModal, isMining }) => {
 											<VerifiedRoundedIcon fontSize="large" />
 										</Button>
 									)}
-									<p onClick={() => setOpenModal(false)} className="Modal-signup-text">
+									<p onClick={() => {
+										setVerifySMS(false)
+										setOpenModal(false)
+										}} className="Modal-signup-text">
 										Skip for now
 									</p>
 								</form>

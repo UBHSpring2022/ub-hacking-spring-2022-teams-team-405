@@ -16,6 +16,13 @@
         & h1 {
             margin-bottom: 1rem;
         }
+        &-sms-link{
+          margin: 1rem;
+          &:hover{
+            cursor: pointer;
+            color: var(--accent-color);
+          }
+        }
         & form {
             display: flex;
             flex-direction: column;

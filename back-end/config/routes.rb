@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  post "/textme", to: "auth#textme" 
+  get "/textme", to: "auth#textme" 
   get "/verify", to: "auth#verify" 
   get "/profile", to: "auth#profile" 
   post "/login", to: "auth#login" 
